@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import {MyserviceService} from './myservice.service';
+import {Http} from '@angular/http';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-root',
@@ -10,21 +13,24 @@ export class AppComponent {
   months = ["January", "Febuary","March","April"];
   isavaliable = true;
 
+  componentProperty;
+  constructor(private myservice : MyserviceService){}
+  ngOnInit(){
+    this.todayDate = this.myservice.showTodaysDate();
+    console.log(this.myservice.serviceProperty);
+    this.myservice.serviceProperty = "component created";
+    this.componentProperty = this.myservice.serviceProperty;
+  }
+
   myClickFunction(event){
     this.isavaliable = !this.isavaliable;
   }
 
   monthChanged(event) {
-    console.log("month changed")
-    console.log(event)
+    this.myservice.log("month changed to "+ event.target.value);
   }
 
-  monthSelected(){
-    console.log("month selected")
-  }
-
-  todayDate = new Date();
-  jsonVal = {name:'Rox',age:25,address:{a1:'Mumbai',a2:'Bombay'}};
+  todayDate ;
 
 
 
